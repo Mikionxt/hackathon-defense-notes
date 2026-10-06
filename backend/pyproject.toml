@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "hackathon"
+version = "0.1.0"
+description = ""
+authors = ["Danil"]
+package-mode = false
+
+[tool.poetry.dependencies]
+python = ">=3.12,<4.0"
+alembic = ">=1.20.0"
+asyncpg = ">=0.31.0"
+fastapi = {version = ">=0.142.0", extras = ["standard"]}
+passlib = {version = ">=1.7.4", extras = ["argon2"]}
+pydantic = ">=2.13.5"
+pydantic-settings = ">=2.15.0"
+pyjwt = ">=2.13.0"
+sqlalchemy = {version = ">=2.1.1", extras = ["asyncio"]}
+uuid6 = ">=2025.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
