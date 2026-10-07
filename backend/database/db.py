@@ -1,6 +1,7 @@
 from collections.abc import AsyncGenerator
 
 from core.config import get_db_settings
+from sqlalchemy import MetaData
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 
@@ -14,9 +15,17 @@ engine = create_async_engine(
     pool_pre_ping=True,
 )
 
+# Имена ограничений нужны Alembic: без них нельзя надёжно удалять и менять constraints.
+NAMING_CONVENTION = {
+    "ix": "ix_%(column_0_label)s",
+    "uq": "uq_%(table_name)s_%(column_0_N_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s",
+}
 
 class Base(DeclarativeBase):
-    pass
+    metadata = MetaData(naming_convention=NAMING_CONVENTION)
 
 
 async_session_factory = async_sessionmaker(
