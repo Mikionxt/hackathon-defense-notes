@@ -6,6 +6,7 @@ from src.habits.enums import Visibility
 
 
 class HabitCreateSchema(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     title: str = Field(min_length=1, max_length=100)
     color_hex: str = Field(default="#4F46E5", pattern=r"^#[0-9A-Fa-f]{6}$")
     visibility: Visibility = Visibility.FRIENDS
@@ -13,6 +14,7 @@ class HabitCreateSchema(BaseModel):
 
 
 class HabitUpdateSchema(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
     title: str | None = Field(default=None, min_length=1, max_length=100)
     color_hex: str | None = Field(default=None, pattern=r"^#[0-9A-Fa-f]{6}$")
     visibility: Visibility | None = None
