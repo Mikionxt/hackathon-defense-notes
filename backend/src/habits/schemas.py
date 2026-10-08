@@ -14,8 +14,7 @@ class HabitLogCreateSchema(BaseModel):
     @field_validator("completed_date")
     @classmethod
     def not_in_future(cls, v: date | None) -> date | None:
-        # +1 день — запас на разницу TZ (юзер в UTC+14 может быть на день впереди сервера).
-        if v is not None and v > date.today() + timedelta(days=1):
+        if v is not None and v > date.today():
             raise ValueError("completed_date не может быть в будущем")
         return v
 
