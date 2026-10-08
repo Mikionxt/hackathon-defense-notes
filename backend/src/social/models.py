@@ -1,6 +1,7 @@
 import uuid
+from datetime import datetime
 
-from sqlalchemy import ForeignKey, UniqueConstraint, CheckConstraint, Index, Text
+from sqlalchemy import ForeignKey, UniqueConstraint, CheckConstraint, Index, Text, DateTime, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from typing import TYPE_CHECKING
@@ -12,8 +13,6 @@ from src.social.enums import RelationStatus
 
 if TYPE_CHECKING:
     from src.users.models import User
-
-
 
 
 class UserRelation(Uuid7PkMixin, TimeStampMixin, Base):
@@ -65,6 +64,13 @@ class Message(Uuid7PkMixin, TimeStampMixin, Base):
     sender_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     receiver_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     content: Mapped[str] = mapped_column(Text)  # длину (до 2000) проверяет Pydantic
+
+    # Прочитано ли получателем. По умолчанию — нет.
+    # Индекс нужен для быстрого запроса «непрочитанные от данного юзера».
+    is_read: Mapped[bool] = mapped_column(default=False, server_default=text("false"), index=True)
+    # Когда прочитано. NULL — если ещё не читали.
+    read_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
     sender: Mapped["User"] = relationship(
         back_populates="sent_messages",
         foreign_keys=[sender_id],
@@ -79,3 +85,4 @@ class Message(Uuid7PkMixin, TimeStampMixin, Base):
     __table_args__ = (
         Index("ix_messages_dialog", "sender_id", "receiver_id", "id"),
     )
+    
