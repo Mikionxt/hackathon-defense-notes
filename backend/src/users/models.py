@@ -2,22 +2,22 @@ import uuid
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String, BigInteger, DateTime, ForeignKey, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column, relationship
-
 from database.db import Base
 from database.enum import str_enum
-from database.mixins import Uuid7PkMixin, TimeStampMixin
+from database.mixins import TimeStampMixin, Uuid7PkMixin
+from sqlalchemy import BigInteger, DateTime, ForeignKey, String, UniqueConstraint
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.users.enums import Theme
 
 if TYPE_CHECKING:
     from src.habits.models import Habit, HabitLog, SharedHabitUser
-    from src.social.models import UserRelation, Message
+    from src.social.models import Message, UserRelation
+
 
 class User(Uuid7PkMixin, TimeStampMixin, Base):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
-    username: Mapped[str] = mapped_column(String(32), unique=True)
+    username: Mapped[str] = mapped_column(String(16), unique=True)
     email: Mapped[str] = mapped_column(String(255), unique=True)
     password_hash: Mapped[str] = mapped_column(String(255))
 
@@ -56,8 +56,10 @@ class User(Uuid7PkMixin, TimeStampMixin, Base):
         foreign_keys="Message.receiver_id",
     )
 
+
 class UserAchievement(Uuid7PkMixin, TimeStampMixin, Base):
     """Достижение уровня пользователя, не привязано к конкретной привычке."""
+
     __tablename__ = "user_achievements"
 
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
