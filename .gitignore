@@ -14,3 +14,7 @@ wheels/
 
 #vs code
 .vscode
+# IDE
+
+# IDE
+.idea/

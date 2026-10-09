@@ -7,8 +7,7 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.auth.security import decode_access_token
 from src.exceptions.auth_exceptions import InvalidTokenError
-
-# from src.users.models import User
+from src.users.models import User
 
 SessionDep = Annotated[AsyncSession, Depends(get_db)]
 
@@ -41,20 +40,8 @@ async def get_current_user(
     user = await session.get(User, user_id)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Пользователь не найден")
-    if user.is_banned:
-        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Вы были забанены.")
-    return user
-
-
-async def get_current_premium_user(
-    user: Annotated[User, Depends(get_current_user)],
-) -> User:
-    if not user.is_premium:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Эта функция доступна только с premium",
-        )
     return user
 
 
 CurrentUserIdDep = Annotated[uuid.UUID, Depends(get_current_user_id)]
+CurrentUserDep = Annotated[User, Depends(get_current_user)]
