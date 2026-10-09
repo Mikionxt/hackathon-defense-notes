@@ -1,5 +1,6 @@
+import datetime
 import uuid
-from datetime import time, date
+from datetime import time, date, datetime
 from typing import Annotated
 from pydantic import BaseModel, Field, ConfigDict
 from src.habits.enums import Visibility
@@ -23,10 +24,23 @@ class HabitUpdateSchema(BaseModel):
 
 class HabitOutputSchema(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-
     id: uuid.UUID
     title: str
     color_hex: str
     visibility: Visibility
     start_date: date
     notification_times: list[time]
+    # добавил из TimeStampMixin
+    created_at: datetime
+    updated_at: datetime
+
+
+# добавил Даня, мне нужно было для src/feed/schemas
+class HabitLogOutputSchema(BaseModel):
+    model_config=ConfigDict(from_attributes=True)
+    id: uuid.UUID
+    created_at: datetime
+    updated_at: datetime
+    habit_id: uuid.UUID
+    user_id: uuid.UUID
+    completed_date: date
