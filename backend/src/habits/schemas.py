@@ -15,7 +15,7 @@ class HabitLogCreateSchema(BaseModel):
     @classmethod
     def not_in_future(cls, v: date | None) -> date | None:
         if v is not None and v > date.today():
-            raise ValueError("completed_date не может быть в будущем")
+            raise ValueError("Дата не может быть в будущем")
         return v
 
 
