@@ -2,7 +2,7 @@ import uuid
 from datetime import time
 from typing import Any
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.habits.enums import Visibility
@@ -40,7 +40,7 @@ class HabitsRepository:
     async def get_all_habits(self, creator_id: uuid.UUID) -> list[Habit]:
         habits = select(Habit).where(Habit.creator_id == creator_id)
         result = await self.session.execute(habits)
-        return list(result.scalars().all())
+        return result.scalars().all()
 
     async def update_habit(
         self,
@@ -60,10 +60,14 @@ class HabitsRepository:
         return habit
 
     async def delete_habit(self, habit_id: uuid.UUID, creator_id: uuid.UUID) -> bool:
-        habit = await self.get_habit_by_id(habit_id=habit_id, creator_id=creator_id)
-        if habit is None:
-            return False
-
-        await self.session.delete(habit)
+        stmt = (
+            delete(Habit)
+            .where(
+                Habit.id == habit_id,
+                Habit.creator_id == creator_id,
+            )
+            .returning(Habit.id)
+        )
+        result = await self.session.execute(stmt)
         await self.session.commit()
-        return True
+        return result.scalar_one_or_none() is not None
