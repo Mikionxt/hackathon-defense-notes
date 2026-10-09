@@ -12,6 +12,7 @@ from src.habits.enums import Visibility, InviteStatus
 
 if TYPE_CHECKING:
     from src.users.models import User
+    from src.feed.models import Review
 
 
 class Habit(Uuid7PkMixin, TimeStampMixin, Base):
@@ -90,6 +91,7 @@ class HabitLog(Uuid7PkMixin, Base):
 
     habit: Mapped["Habit"] = relationship(back_populates="logs")
     user: Mapped["User"] = relationship(back_populates="habit_logs")
+    reviews: Mapped[list["Review"]] = relationship(back_populates="habit_log")
 
     __table_args__ = (
         # Одна отметка в день на человека. Покрывает и запросы «все отметки привычки».
