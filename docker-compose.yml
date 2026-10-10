@@ -1,0 +1,54 @@
+services:
+  postgres:
+    image: postgres:16.2-alpine
+    container_name: core_db
+    restart: unless-stopped
+    env_file:
+      - .env 
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_NAME}
+    ports:
+      - "${POSTGRES_PORT:-5435}:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - app_network
+ 
+  backend:
+    profiles: ["full"]
+    build:
+      context: ./backend      
+      dockerfile: Dockerfile
+    container_name: fastapi_backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:            
+    - POSTGRES_HOST=postgres
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy 
+    networks:
+      - app_network
+    volumes:
+      - ./backend:/app/backend    
+      - /app/backend/.venv
+ 
+volumes:
+  pg_data:
+  minio_data: 
+ 
+networks:
+  app_network:
+    driver: bridge
