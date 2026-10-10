@@ -74,7 +74,7 @@ class SharedHabitUser(Uuid7PkMixin, TimeStampMixin, Base):
 
 
 
-class HabitLog(Uuid7PkMixin, Base):
+class HabitLog(Uuid7PkMixin, TimeStampMixin, Base):
     __tablename__ = "habit_logs"
 
     # Пользователь может отмечать привычку только если:
