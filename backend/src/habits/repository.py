@@ -1,18 +1,13 @@
-from datetime import time
-from src.habits.models import Habit
-from src.habits.enums import Visibility
-from sqlalchemy import select, delete
-from typing import Any
 import uuid
-from datetime import date
+from datetime import date, time
+from typing import Any
 
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.habits.enums import InviteStatus
+from src.habits.enums import InviteStatus, Visibility
 from src.habits.models import Habit, HabitLog, SharedHabitUser
-
 
 class HabitLogRepository:
     def __init__(self, session: AsyncSession):
@@ -165,6 +160,7 @@ class HabitLogRepository:
             SharedHabitUser.status == InviteStatus.ACCEPTED,
         )
         result = await self.session.execute(stmt)
+        return result.scalar_one_or_none() is not None
 
 
 class HabitsRepository:

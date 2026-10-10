@@ -1,12 +1,10 @@
-import datetime
-from src.habits.enums import Visibility
-from pydantic import BaseModel, Field, ConfigDict
-from typing import Annotated
-from datetime import time, date, datetime
 import uuid
-from datetime import date
+from datetime import date, datetime, time
+from typing import Annotated
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from src.habits.enums import Visibility
 
 
 class HabitLogCreateSchema(BaseModel):
@@ -22,16 +20,6 @@ class HabitLogCreateSchema(BaseModel):
         if v is not None and v > date.today():
             raise ValueError("Дата не может быть в будущем")
         return v
-
-
-class HabitLogOutputSchema(BaseModel):
-    """Output-схема отметки о выполнении."""
-    model_config = ConfigDict(from_attributes=True)
-
-    id: uuid.UUID
-    habit_id: uuid.UUID
-    user_id: uuid.UUID
-    completed_date: date
 
 
 class HabitCreateSchema(BaseModel):
