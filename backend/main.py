@@ -35,7 +35,7 @@ app.include_router(feed_router, prefix=ROUTERS_PREFIX)
 
 @app.get("/health", tags=["🩺 System"], description="Healthcheck")
 async def health() -> dict[str, str]:
-    """Проверка, что сервер запустился."""
+    """Проверка что сервер запустился йоу"""
     return {"status": "ok"}
 
 
