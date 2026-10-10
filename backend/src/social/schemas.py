@@ -38,16 +38,18 @@ class MessageOutputSchema(BaseModel):
 
 class WSMessageIn(BaseModel):
     """Клиент → сервер: отправить сообщение получателю."""
-    type: Literal["message"]
+    model_config = ConfigDict(str_strip_whitespace=True)
 
+    type: Literal["message"]
     receiver_id: uuid.UUID
     content: Annotated[str, Field(min_length=1, max_length=2000)]
 
 
 class WSHistoryIn(BaseModel):
     """Клиент → сервер: запросить историю переписки с пользователем."""
-    type: Literal["history"]
+    model_config = ConfigDict(str_strip_whitespace=True)
 
+    type: Literal["history"]
     peer_id: uuid.UUID
     limit: Annotated[int, Field(ge=1, le=200)] = 50
     # курсорная пагинация: получить сообщения «до» указанного id
@@ -57,8 +59,9 @@ class WSHistoryIn(BaseModel):
 
 class WSMarkReadIn(BaseModel):
     """Клиент → сервер: пометить сообщения прочитанными."""
-    type: Literal["mark_read"]
+    model_config = ConfigDict(str_strip_whitespace=True)
 
+    type: Literal["mark_read"]
     message_ids: Annotated[list[uuid.UUID], Field(min_length=1)]
 
 
@@ -97,4 +100,3 @@ class WSErrorOut(BaseModel):
     detail: str
 
 
-    
