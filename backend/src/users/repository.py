@@ -14,6 +14,9 @@ class UsersRepository:
         await self.session.commit()
         return new_user
 
+    async def get_user_by_id(self, user_id: uuid.UUID) -> User | None:
+        return await self.session.get(User, user_id)
+
     async def get_user_by_username(self, username: str) -> User | None:
         stmt = select(User).where(User.username == username)
         result = await self.session.execute(stmt)
