@@ -41,6 +41,16 @@ class MinioSettings(BaseSettings):
     def endpoint(self) -> str:
         return f"{self.protocol}://{self.host}:{self.port}"
 
+class TelegramSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=ENV_FILE, env_prefix="TELEGRAM_", extra="ignore")
+    bot_token: str
+    bot_name: str
+    webhook_url: str = ""    #заполню позже
+    link_ttl_minutes: int = 15
+
+@lru_cache
+def get_telegram_settings() -> TelegramSettings:
+    return TelegramSettings()
 
 @lru_cache
 def get_db_settings() -> PostgresSettings:
