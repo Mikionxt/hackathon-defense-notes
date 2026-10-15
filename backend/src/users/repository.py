@@ -43,6 +43,17 @@ class UsersRepository:
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
+    async def get_user_by_telegram_hash(self, token_hash: str) -> User | None:
+        stmt = select(User).where(User.telegram_link_token_hash == token_hash)
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()
+
+
+    async def get_user_by_telegram_chat_id(self, chat_id: int) -> User | None:
+        stmt = select(User).where(User.telegram_chat_id == chat_id)
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()
+
     async def delete_user(self, user_id: uuid.UUID) -> bool:
         stmt = delete(User).where(User.id == user_id)
         result = await self.session.execute(stmt)
