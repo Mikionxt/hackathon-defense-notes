@@ -18,6 +18,7 @@ from src.habits.router import router as habits_router
 from src.social.router import router as social_router
 from src.friends.router import router as friends_router
 from src.telegram.router import router as telegram_router
+from src.social.ws import router as social_ws_router
 # == ROUTERS ==
 
 ROUTERS_PREFIX = "/api/v1"
@@ -44,6 +45,8 @@ app.include_router(habits_router, prefix=ROUTERS_PREFIX)
 app.include_router(social_router, prefix=ROUTERS_PREFIX)
 app.include_router(friends_router, prefix=ROUTERS_PREFIX)
 app.include_router(telegram_router, prefix=ROUTERS_PREFIX)
+app.include_router(social_ws_router)
+
 
 @app.get("/health", tags=["🩺 System"], description="Healthcheck")
 async def health() -> dict[str, str]:
