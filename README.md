@@ -1,22 +1,74 @@
-# Хакатон
+# analogovnet.rest
 
-Трекер привычек с соцсетью: друзья, чат, достижения.
+[Доступно по ссылке](https://analogovnet.rest)
 
-## Что нужно установить
+### **Социальная сеть для совместного трекинга привычек, в которой есть:**
+
+- Система стриков и ачивок
+- Дашборд с визуализацией и подробными метриками
+- Система друзей
+- Чаты
+- Новостная лента
+- Интеграция с Telegram для уведомлений
+- Экспорт статистики в .csv
+- Настройка личного профиля
+***
+
+
+### 🖼️ Screenshots
+
+<img width="1894" height="904" alt="{D2FAD369-A99D-4B15-A754-377C3E3CF692}" src="https://github.com/user-attachments/assets/b6b21893-e1a8-4164-9e57-4d5bce25bcf6" />
+<img width="1890" height="896" alt="{6A5B89F8-5D2B-4D7A-8147-2E7BAC984859}" src="https://github.com/user-attachments/assets/6c8bb821-cbb9-40c5-8540-3e68276bbafa" />
+<img width="1890" height="902" alt="{FCF3171A-F19E-459B-BEEE-38B785F0FF63}" src="https://github.com/user-attachments/assets/8889ee3b-23ae-4c3b-8a5b-0c07f1eecb8d" />
+<img width="1892" height="896" alt="{B606B5E5-E673-4C0C-8494-76C78C68D376}" src="https://github.com/user-attachments/assets/1844ac91-fbff-45e6-96e1-d71158477a97" />
+<img width="1916" height="908" alt="{6D648703-4E78-4FD8-8A97-9584182BB8BB}" src="https://github.com/user-attachments/assets/9279209b-c871-486f-b331-134b162887d3" />
+<img width="1915" height="902" alt="{7052B86B-E306-4440-B493-DDB89F7DBCD9}" src="https://github.com/user-attachments/assets/7519c29c-e03b-41f1-ae62-f6d6f63df56d" />
+
+
+***
+
+# Установка
+
+### Требования:
 
 - Docker с Docker Compose v2 (проверка: `docker compose version`)
 - Git
 
 ## Первый запуск
 
+Клонирование репозитория:
 ```bash
-git clone <адрес-репозитория>
+git clone git@github.com:virtual-blank/hackathon.git
+```
+```bash
 cd hackathon
-
+```
+Заполнение .env
+```bash
 cp .env.example .env
+```
+```bash
 chmod +x start.sh
-
+```
+Запуск со сгенерированной базой данных (700тыс+):
+```bash
 ./start.sh --include-synthetic
+```
+```
+[!] Записи в БД:
+  achievements                10
+  users                    2,889
+  refresh_tokens           4,508
+  reviews                 10,447
+  user_achievements       20,694
+  habits                  12,987
+  user_relations          41,046
+  messages                95,281
+  habit_logs             542,998
+```
+Запуск с пустой базой данных:
+```bash
+./start.sh
 ```
 
 Первый запуск собирает образы и занимает несколько минут.
