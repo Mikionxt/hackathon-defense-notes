@@ -38,7 +38,7 @@
 
 Клонирование репозитория:
 ```bash
-git clone git@github.com:virtual-blank/hackathon.git
+git clone https://github.com/virtual-blank/hackathon.git
 ```
 ```bash
 cd hackathon
