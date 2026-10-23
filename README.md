@@ -1,6 +1,6 @@
 # analogovnet.rest
 
-[Доступно по ссылке](https://analogovnet.rest)
+[Доступно по ссылке (vpn)](https://analogovnet.rest)
 
 ### **Социальная сеть для совместного трекинга привычек, в которой есть:**
 
